@@ -1,0 +1,290 @@
+h1 {
+    font-family: 'TF2 Build', sans-serif;
+    color: white;
+    padding: 20px;
+}
+
+h2 {
+    font-family: 'TF2 Build', sans-serif;
+    color: white;
+    padding: 15px;
+    text-decoration-line: underline; 
+    text-decoration-color: #2a2826; 
+    text-decoration-thickness: 2px;
+    text-underline-offset: 8px;
+}
+
+/* search form */
+.search-form {
+    background-color: rgb(240, 240, 240);
+    box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -100px 100px 0px inset, 
+        rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, 
+            rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 62px 50px;
+    border-radius: 17px;
+    width: 80vw;
+    max-width: 700px;
+    min-width: 300px;
+    margin: auto;
+    padding: 30px;
+}
+
+.checkbox-label {
+    border-radius: 7px;
+    border: 1px solid #666;
+    color: #000;
+    background-color: white;
+    padding: 1px 5px 1px 5px;
+    display: inline-block;
+    font-size: 14px;
+    margin: 0px 2px;
+    cursor: pointer;
+    user-select: none;
+    box-shadow:1px 1px 1px #888;
+}
+
+.checkbox-input {
+    display:none;  
+} 
+
+.checkbox-input:checked + .checkbox-label {
+    background-color: lightgreen;
+    box-shadow:1px 1px 4px 2px rgba(0,150,0, 1) inset;
+}
+
+.checkbox-input:disabled + .checkbox-label{
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
+}
+
+/* item filter */
+.sort-button, .sort-filter, .link-bar {
+    background-color: #2a2826;
+    color: white;
+    border-radius: 7px;
+    border: 2px solid;
+    border-color: black;
+    width: 200px;
+    height: 30px;
+    padding: 2px 5px 2px 5px;
+    margin: 5px 5px 8px 5px;
+    font-size: 17px;
+    font-family: 'TF2 Build', sans-serif;
+}
+
+.link-bar {
+    width: 500px;
+    margin: auto;
+}
+.sort-button:hover, .sort-filter:hover, .link-bar:hover {
+    background-color: #404040;
+}
+
+.sort-filter {
+    width: 270px;
+}
+
+/* item/image overview */
+.info-container {
+    display:flex;
+    justify-content: center;   
+}
+
+.flexbox-item-overview {
+    background-color: #2a2826;
+    height: 580px;
+    margin: 25px 0;
+    border-radius: 7px;
+    border: 2px solid;
+}
+
+.title {
+    padding-top: 20px;
+    margin: 0;
+    text-align: center;
+    max-width: 530px;
+    height: 50px;
+    font-family: 'TF2 Build', sans-serif;
+    font-size: 25px;
+    
+}
+
+#warpaint-image {
+    width: 90%;
+    min-width: 200px;
+    margin: 0px;
+    filter: drop-shadow(0 0 3rem rgb(90, 90, 90));
+}
+
+.qualityContainer {
+    font-family: 'TF2 Build', sans-serif;
+    font-size: 20px;
+    border-radius: 7px;
+    width: 50%;
+    text-align: center;
+    color:black;
+    margin: auto;
+    border: 1px solid;
+    border-color: black;
+}
+
+/* warpaint info links table */
+.links-table {
+    border-collapse: collapse;
+    margin: 25px;
+    font-size: 0.9em;
+    min-width: 300px;
+    border-radius: 7px 7px 0 0;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    height: 580px;
+}
+
+.links-table tbody th{
+    background-color: #252322;
+    text-align: left;
+}
+
+.links-table tbody tr{
+    background-color: #2a2826;
+    text-align: left;
+}
+
+.links-table th,
+.links-table td {
+    PADDING: 7PX 25PX;
+    max-width: 300px;
+    
+}
+
+.links-table th {
+    border-right:2px solid black;
+}
+
+.links-table td {
+    width:70px;
+}
+
+.links-table tbody tr {
+    border-bottom: 1px solid black; 
+}
+
+
+/* search result overview */
+.result-container {
+    display:flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    background-color: #2a2826;
+    height: 580px;
+    width: 400px;
+    margin: 25px;
+    border-radius: 7px;
+    border: 2px solid;
+    border-color: black;
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.7);
+}
+
+.link-results {
+    display:flex;
+    justify-content: center;
+    column-gap: 30px;
+}
+
+/* icons for info links icons*/
+.icon-image {
+    border-radius: 3px;
+    outline-style: solid;
+    outline-width: 1px;
+    outline-color: black;
+    border-color: black;
+    width: 30px;
+    height: 30px;
+    box-shadow: 1px 1px 10px black;
+    background-color: black;
+}
+
+/* bigger icons in search results */
+.icon-image.medium {
+    width: 50px;
+    height: 50px;
+    box-shadow: 5px 5px 15px black;
+}
+.icon-image:hover {
+    box-shadow: 0 0 10px darkgrey;
+}
+
+
+/* all warpaints grid overview */
+.ItemGrid {
+    padding:0 10% 0 10%;
+    display: flex;
+    flex-wrap: wrap;
+    grid-gap:.6em;
+    justify-content: center;
+
+}
+
+div.grid-item {
+    border: 1px solid;
+    width: 180px;
+    height: 220px;
+    border-radius: 7px;
+    border-width: 1px;
+    background-color: #2a2826;
+}
+
+/* bigger for decorated weapons tab */
+.grid-item.bigger {
+    width: 220px;
+    height: 260px;
+}
+
+.grid-item:hover {
+    background-color: #404040;
+}
+
+div.grid-item img {
+    width: 90%;
+    height: auto;
+}
+
+div.desc {
+    padding: 0px 5px 15px 5px;
+    text-align: center;
+    font-family: 'TF2 Build', sans-serif;
+    font-size: 17px;
+}
+
+/* colors */
+/* grades */
+.Elite  { color: #EB4B4B; }
+.Elite-bg { background-color: #EB4B4B; }
+.Elite-border { border-color: #EB4B4B; }
+
+.Assassin { color: #D32CE6; }
+.Assassin-bg { background-color: #D32CE6; }
+.Assassin-border { border-color: #D32CE6; }
+
+.Commando { color: #8847FF; }
+.Commando-bg { background-color: #8847FF; }
+.Commando-border { border-color: #8847FF; }
+
+.Mercenary { color: #4B69FF; }
+.Mercenary-bg { background-color: #4B69FF; }
+.Mercenary-border { border-color: #4B69FF; }
+
+.Freelance { color: #5E98D9; }
+.Freelance-bg { background-color: #5E98D9; }
+.Freelance-border { border-color: #5E98D9; }
+
+.Civilian { color: #B0C3D9; }
+.Civilian-bg { background-color: #B0C3D9; }
+.Civilian-border { border-color: #B0C3D9; }
+
+/* qualities */
+.decorated { color: #FAFAFA; }
+.decorated-bg { background-color: #FAFAFA; }
+
+.strange { color: #CF6A32; }
+.unusual { color: #8650AC; }

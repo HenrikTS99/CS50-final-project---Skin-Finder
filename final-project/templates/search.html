@@ -1,0 +1,148 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Search
+{% endblock %}
+
+{% block main %}
+<div class="search-form mt-5">
+<form id="search_filter" action="/result" method="GET">
+    <fieldset>
+        <legend>Search Form</legend>
+        <h3>Weapon Skins</h3>
+        <div class="mb-3">
+            <select autofocus class="form-control mx-auto w-auto" id="weapon_skin" name="weapon_skin" placeholder="Weapon Skin" onChange="CheckWeaponSkinSelected(this)">
+                <option value= '' selected>None</option>
+                {% for weapon_skin in weapon_skins %}
+                <option value="{{weapon_skin.skin}}|{{weapon_skin.weapon}}">{{weapon_skin.skin}} {{weapon_skin.weapon}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <h3>Warpaint</h3>
+        <div class="mb-3">
+            <select autofocus class="form-control mx-auto w-auto" id="warpaint" name="warpaint" placeholder="War Paint" onChange="DisableGrades(this)">
+                <option value="" selected>None</option>
+                {% for warpaint in warpaints %}
+                <option value="{{warpaint}}">{{warpaint}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <input autofocus class="form-control mx-auto w-auto" id="search_text" name="search_text" placeholder="Additional Search" type="text">
+            <div class="mt-2">
+                <input class="checkbox-input" type="checkbox" name="description" id="description">
+                <label class="checkbox-label" for="description">Enable SCM description search</label>
+            </div>
+        </div>
+
+        <h3>Wear Tier</h3>
+        <div>
+            <input class="checkbox-input" type="checkbox" name="FactoryNew" id="FactoryNew">
+            <label class="checkbox-label" for="FactoryNew">Factory New</label>
+
+            <input class="checkbox-input" type="checkbox" name="MinimalWear" id="MinimalWear">
+            <label class="checkbox-label" for="MinimalWear">Minimal Wear</label>
+
+            <input class="checkbox-input" type="checkbox" name="FieldTested" id="FieldTested">
+            <label class="checkbox-label" for="FieldTested">Field-Tested</label>
+
+            <input class="checkbox-input" type="checkbox" name="WellWorn" id="WellWorn">
+            <label class="checkbox-label" for="WellWorn">Well Worn</label>
+
+            <input class="checkbox-input" type="checkbox" name="BattleScared" id="BattleScared">
+            <label class="checkbox-label" for="BattleScared">Battle Scarred</label>
+        </div>
+
+        <h3>Grade</h3>
+        <div id="grade">
+            <input class="checkbox-input" type="checkbox" name="Elite" id="Elite">
+            <label class="checkbox-label" for="Elite">Elite</label>
+
+            <input class="checkbox-input" type="checkbox" name="Assassin" id="Assassin">
+            <label class="checkbox-label" for="Assassin">Assassin</label>
+
+            <input class="checkbox-input" type="checkbox" name="Commando" id="Commando">
+            <label class="checkbox-label" for="Commando">Commando</label>
+
+            <input class="checkbox-input" type="checkbox" name="Mercenary" id="Mercenary">
+            <label class="checkbox-label" for="Mercenary">Mercenary</label>
+
+            <input class="checkbox-input" type="checkbox" name="Freelance" id="Freelance">
+            <label class="checkbox-label" for="Freelance">Freelance</label>
+
+            <input class="checkbox-input" type="checkbox" name="Civilian" id="Civilian">
+            <label class="checkbox-label" for="Civilian">Civilian</label>
+        </div>
+
+        <h3>Killstreak</h3>
+        <div>
+            <input class="checkbox-input" checked="checked" value="" type="radio" name="killstreak" id="none">
+            <label class="checkbox-label" for="none">Any</label>
+
+            <input class="checkbox-input" value="Killstreak" type="radio" name="killstreak" id="Killstreak">
+            <label class="checkbox-label" for="Killstreak">Standard</label>
+
+            <input class="checkbox-input" value="Specialized Killstreak" type="radio" name="killstreak" id="Specialized Killstreak">
+            <label class="checkbox-label"  for="Specialized Killstreak">Specialized</label>
+
+            <input class="checkbox-input" value="Professional Killstreak" type="radio" name="killstreak" id="Professional Killstreak">
+            <label class="checkbox-label" for="Professional Killstreak">Professional</label>
+        </div>
+
+
+        <h3>Weapon</h3>
+        <div class="mb-3">
+            <select autofocus class="form-control mx-auto w-auto" id="weapon" name="weapon" placeholder="Weapon">
+                <option type="hidden" value="" selected>Any</option>
+                {% for weapon in weapons %}
+                <option value="{{weapon}}">{{weapon}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <h3>Quality</h3>
+        <div class=" mb-3">
+            <input class="checkbox-input" type="checkbox" name="strange" id="strange">
+            <label class="checkbox-label" for="strange">Strange</label>
+
+            <input class="checkbox-input" type="checkbox" name="rarity4" id="rarity4">
+            <label class="checkbox-label" for="rarity4">Unusual</label>
+        </div>
+        <div>
+            <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+    </fieldset>
+</form>
+</div>
+
+<script>
+    var warpaint_select = document.getElementById("warpaint");
+    var grade_checkboxes = document.querySelectorAll('#grade input[type="checkbox"]');
+
+    // Function for disabling grade tier and warpaint selection when a weapon skin is selected.
+    function CheckWeaponSkinSelected(selectElement) {
+        if (selectElement.value !== '') {
+            warpaint_select.disabled = true;
+            warpaint_select.value = '';
+            DisableGrades(selectElement)
+        } else {
+            warpaint_select.disabled = false;
+            DisableGrades(selectElement)
+        }
+    }
+    // disable grade tier selection
+    function DisableGrades(selectElement) {
+        if (selectElement.value !== '') {
+            grade_checkboxes.forEach(function(checkbox) {
+                checkbox.checked = false;
+                checkbox.disabled = true;
+            });
+        } else {
+            grade_checkboxes.forEach(function(checkbox) {
+                checkbox.disabled = false;
+            });
+    }}
+</script>
+{% endblock %}

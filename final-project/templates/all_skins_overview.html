@@ -1,0 +1,80 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    {{page_title}}
+{% endblock %}
+
+{% block main %}
+    <div id="container">
+        <h1>All TF2 {{page_title}}</h1>
+        <div class="sortbar">
+            <button class="sort-button" onclick="sortByGrade()">sort by grade</button>
+            <button class="sort-button" onclick="sortByCollection()">sort by collection</button>
+            <input class="sort-filter" id="search" placeholder="Search {{page_title}}">
+        </div>
+        <div id="skins-list"></div>
+    </div>
+
+    <script>
+        // Script for displaying skins, and sorting after grade or collection.
+        var skins = JSON.parse('{{ skins|tojson|safe }}');
+        const skinsSection = document.getElementById("skins-list");
+
+        // bigger icons if skin is decorated weapon, smaller if warpaints.
+        const sizeClass = skins[0].hasOwnProperty('skin') ? 'bigger' : '';
+
+        // HTML for sorting skins after grade and collection. the HTML uses jinja and variables from the backend.
+        const gradeSortHTML = `
+        <section class="ItemGrid ${sizeClass}">
+            {% for skin in skins %}
+                {% if page_title == 'decorated Weapons' %}
+                    <a href="/decorated_weapons/{{skin.skin}}/{{skin.weapon}}" style="text-decoration:none">
+                {% else %}
+                    <a href="/warpaint/{{skin.name}}" style="text-decoration:none">
+                {% endif %}
+                <div class="grid-item ${sizeClass} {{skin.grade}}" >
+                    <img src="{{skin.image_url}}" width="120" height="120">
+                    <div class="desc item-grade {{skin.grade}}">
+                        {% if page_title == 'decorated Weapons' %}{{skin.skin}} {{skin.weapon}}{% else %}{{skin.name}}{% endif %}
+                    </div>
+                </div>
+                </a>
+            {% endfor %}
+        </section>
+        `;
+
+        const collectionSortHTML = `
+        {% for collection, skin in collection_dict.items() %}
+            <h2>{{collection}}</h2>
+            <section class="ItemGrid ${sizeClass}">
+                {% for skin in skin %}
+                    {% if page_title == 'decorated Weapons' %}
+                        <a href="/decorated_weapons/{{skin.skin}}/{{skin.weapon}}" style="text-decoration:none">
+                    {% else %}
+                        <a href="/warpaint/{{skin.name}}" style="text-decoration:none">
+                    {% endif %}
+                    <div class="grid-item ${sizeClass} {{skin.grade}}" >
+                        <img src="{{skin.image_url}}" width="120" height="120">
+                        <div class="desc item-grade {{skin.grade}}">
+                            {% if page_title == 'decorated Weapons' %}{{skin.skin}} {{skin.weapon}}{% else %}{{skin.name}}{% endif %}
+                        </div>
+                    </div>
+                    </a>
+                {% endfor %}
+            </section>
+        {% endfor %}
+        `;
+
+        function sortByGrade(){
+            skinsSection.innerHTML = gradeSortHTML;
+        }
+
+        function sortByCollection(){
+            skinsSection.innerHTML = collectionSortHTML;
+        }
+
+        sortByGrade();
+    </script>
+    <!--Script for filtering after search -->
+    <script src="/static/skin_search_filter.js"></script>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Warpaint Info
+{% endblock %}
+
+{% block main %}
+<div id="container">
+    <h1>{{type}} Showcase</h1>
+    <p style="color:black;">Links for quickly searching a {{type}}. <br>
+    Look through non-specific filters, or filter through wear and strange. <br>
+    Check Steam Community Market, Backpack.tf and Marketplace.tf. </p>
+
+    <!--Item overview-->
+    <div class="info-container">
+        <div class="flexbox-item-overview {{warpaint.grade}}-border">
+            {% if type == 'warpaint' %}
+                <div class=" title {{warpaint.grade}}">{{warpaint.name}} Warpaint</div>
+            {% else %}
+                <div class=" title {{warpaint.grade}}">{{warpaint.skin}} {{warpaint.weapon}}</div>
+            {% endif %}
+            <img id ="warpaint-image" src="{{warpaint.image_url}}">
+            <div class="qualityContainer {{warpaint.grade}}-bg">{{warpaint.grade}} Grade</div>
+        </div>
+
+        <!--Links table-->
+        <table class="links-table">
+            <tbody>
+            {% for i in scm_links %}
+                <tr>
+                    <th class="{{table_names[loop.index0]['category']}}">{{table_names[loop.index0]['name']}}</th>
+                    <td><a href={{scm_links[loop.index0]}} target="_blank"><img class ="icon-image" src="https://cdn-icons-png.flaticon.com/512/220/220223.png"></a></td>
+                    <td><a href={{bp_links[loop.index0]}} target="_blank"><img class ="icon-image" src="https://backpack.tf/images/tf-icon.png"></a></td>
+                    <td><a href={{mp_links[loop.index0]}} target="_blank"><img class ="icon-image" src="https://pbs.twimg.com/profile_images/1439099465579835392/022gY5ES_400x400.jpg"></a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+   
+{% endblock %}

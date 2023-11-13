@@ -1,0 +1,179 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Search Result
+{% endblock %}
+
+{% block main %}
+    <div id="container">
+        <div class="flexbox-item-title"></div>
+        <h1>{{warpaint_dict.name}} Search Result</h1>
+        <p style="color:black;">Navigate provided links for your specificed search. <br>
+        Quickly and easily adjust search filters. <br>
+        Check listings through Steam Community Market, Backpack.tf and Marketplace.tf. </p>
+        
+        <div class="info-container">
+            <div class="flexbox-item-overview {{warpaint_dict.grade}}-border">
+                <div class="title 
+                    {% if 'strange' in quality_tags %}strange
+                    {% elif 'rarity4' in quality_tags %}unusual
+                    {% elif type == None %}decorated
+                    {% else %}{{warpaint_dict.grade}}{% endif %}"> <!--change title name according to quality/skin  grade-->
+                    {% if type == 'warpaint' %}
+                        {{warpaint_dict.name}} Warpaint
+                    {% elif type == 'decorated weapon' %}
+                        {{warpaint_dict.skin}} {{warpaint_dict.weapon}}
+                    {% else %}
+                        Any Skin
+                    {% endif %}
+                </div>
+                <!--Change image if no skin is selected-->
+                <img id ="warpaint-image" src="{{warpaint_dict.image_url if type != None else 'https://steamcommunity-a.akamaihd.net/economy/image/fWFc82js0fmoRAP-qOIPu5THSWqfSmTELLqcUywGkijVjZULUrsm1j-9xgEbbQ4fSRDrrAdXh8fqMv6NGucF1Y4w45UM325twwV6bLHiYDNlcVGQV6UPD6BuplG6XiE3sZ5iAIDjp-1IOVK4fTkaGqg'}}">
+                    
+                {% if type == None %}
+                    {% if grade_tiers|length == 1 %}
+                    <div class="qualityContainer {{grade_tiers[0]}}-bg">{{grade_tiers[0]}} Grade</div>
+                    {% else %}
+                    <div class="qualityContainer decorated-bg">Unspecific Grade</div>
+                    {% endif %}
+                {% else%}
+                    <div class="qualityContainer {{warpaint_dict.grade}}-bg">{{warpaint_dict.grade}} Grade</div>
+                {% endif %}
+            </div>
+
+            <form id="search_filter" action="/result" method="GET">
+                <div class="result-container">
+                    <div class="link-results">
+                        <a href={{scm_link}} target="_blank"><img class ="icon-image medium" src="https://cdn-icons-png.flaticon.com/512/220/220223.png"></a>
+                        <a href={{bp_link}} target="_blank"><img class ="icon-image medium" src="https://backpack.tf/images/tf-icon.png"></a>
+                        <a href={{mp_link}} target="_blank"><img class ="icon-image medium" src="https://pbs.twimg.com/profile_images/1439099465579835392/022gY5ES_400x400.jpg"></a>
+                        {% if kit_link %}
+                            <a href={{kit_link}} target="_blank"><img class ="icon-image medium" src="https://steamuserimages-a.akamaihd.net/ugc/723122241513227163/A31C9546BB6C64CA9E85E4A8EF24A9FD0606773C/"></a>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                    {% if type == 'decorated weapon' %}
+                        <select autofocus class="form-control mx-auto w-auto" id="weapon_skin" name="weapon_skin" placeholder="Weapon Skin" onChange="CheckWeaponSkinSelected()">
+                            <option value= '' selected>Any</option>
+                            <option value= '{{warpaint_dict.skin}}|{{warpaint_dict.weapon}}' selected>{{warpaint_dict.skin}} {{warpaint_dict.weapon}}</option>
+                            {% for weapon_skin in weapon_skin_list %}
+                                <option value="{{weapon_skin.skin}}|{{weapon_skin.weapon}}">{{weapon_skin.skin}} {{weapon_skin.weapon}}</option>
+                            {% endfor %}
+                        </select>
+                    {% else %}
+                        <select autofocus class="form-control mx-auto w-auto" id="warpaint" name="warpaint" placeholder="War Paint">
+                            <option value= '' selected>Any</option>
+                            {% if type != None %}
+                                <option value="{{warpaint_dict.name}}" selected>{{warpaint_dict.name}}</option>
+                            {% endif %}
+                            {% for warpaint in warpaint_list %}
+                                <option value="{{warpaint}}">{{warpaint}}</option>
+                            {% endfor %}
+                        </select>
+                    {% endif %}
+                    </div>
+                    <input type="hidden" name="warpaint" value="{{ warpaint_dict.name }}">
+                    <input type="hidden" name="weapon_skin" value="">
+                    
+                    <input type="hidden" name="search_text" value="">
+                    
+                    <div>
+                        {% set wear_tier_labels = {
+                            'FactoryNew': 'Factory New',
+                            'MinimalWear': 'Minimal Wear',
+                            'FieldTested': 'Field-Tested',
+                            'WellWorn': 'Well Worn',
+                            'BattleScared': 'Battle Scarred'
+                        } %}
+                        {% for wear, label in wear_tier_labels.items() %}
+                        <input class="checkbox-input" type="checkbox" name="{{wear}}" id="{{wear}}"
+                            {% if wear in wear_tiers %}checked{% endif %}>
+                        <label class="checkbox-label" for="{{wear}}">{{label}}</label>
+                        {% endfor %}
+                    </div>
+
+                    <div id="grade">
+                        {% for grade in available_grade_tiers %}
+                            <input class="checkbox-input" type="checkbox" name="{{grade}}" id="{{grade}}" {% if grade in grade_tiers %}checked{% endif %}>
+                            <label class="checkbox-label" for="{{grade}}">{{grade}}</label>
+                        {% endfor %}
+                    </div>
+
+                    <div>
+                        {% set killstreaks = [
+                            {'value': '', 'label': 'Any'},
+                            {'value': 'Killstreak', 'label': 'Standard'},
+                            {'value': 'Specialized Killstreak', 'label': 'Specialized'},
+                            {'value': 'Professional Killstreak', 'label': 'Professional'}
+                        ] %}
+                    
+                        {% for k in killstreaks %}
+                        <input class="checkbox-input" value="{{k.value}}" type="radio" name="killstreak" id="{% if k.value %}{{k.value}}{% else %}Any{% endif %}" 
+                            {% if k.value == killstreak %}checked{% endif %}>
+                        <label class="checkbox-label" for="{% if k.value %}{{k.value}}{% else %}Any{% endif %}">{{ k.label }}</label>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        <select autofocus class="form-control mx-auto w-auto" id="weapon" name="weapon" placeholder="Weapon">
+                            <option type="hidden" value="" selected>Any Weapon</option>
+                            {% if weapon != '' %}
+                                <option value="{{weapon}}" selected>{{weapon}}</option>
+                            {% endif %}
+                            {% for weapon in weapons %}
+                            <option value="{{weapon}}">{{weapon}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    {% set quality_tags_labels = [
+                        {'value': 'strange', 'label': 'Strange'},
+                        {'value': 'rarity4', 'label': 'Unusual'}
+                    ] %}
+                    <div>
+                        {% for tag in quality_tags_labels %}
+                            <input class="checkbox-input" type="checkbox" name="{{tag.value}}" id="{{tag.value}}"
+                            {% if tag.value in quality_tags %}checked{% endif %}>
+                            <label class="checkbox-label" for="{{tag.value}}">{{tag.label}}</label>
+                        {% endfor %}
+                    </div>
+
+                    <div>
+                        <button class="btn btn-primary" type="submit">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        {% if type == 'decorated weapon' %}
+            <a href="/decorated_weapons/{{warpaint_dict.skin}}/{{warpaint_dict.weapon}}" style="text-decoration:none">
+                <div class="link-bar {{warpaint_dict.grade}}">
+                    <span>{{warpaint_dict.skin}} {{warpaint_dict.weapon}} Quicksearch</span>
+                </div>
+            </a>
+        {% elif type == 'warpaint' %}
+            <a href="/warpaint/{{warpaint_dict.name}}" style="text-decoration:none">
+                <div class="link-bar {{warpaint_dict.grade}}">
+                    <span>{{warpaint_dict.name}} Quicksearch</span>
+                </div>
+            </a>
+        {% endif %}
+    </div>
+
+    <script>
+        var grade_checkboxes = document.querySelectorAll('#grade input[type="checkbox"]');
+        var type_js = JSON.parse('{{ type|tojson|safe }}')
+
+        // Disable grade tier and warpaint selection when a weapon skin is selected.
+        function CheckWeaponSkinSelected() {
+            if (type_js === 'decorated weapon' || type_js === 'warpaint') {
+                grade_checkboxes.forEach(function(checkbox) {
+                    checkbox.checked = false;
+                    checkbox.disabled = true;
+                });
+            }
+        }
+       
+        CheckWeaponSkinSelected();
+    </script>
+{% endblock %}
